@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+.background {
+  background-image: url('/bg3.jpg');
+}
+.splash-screen {
+  background-image: url('/bg3.png');
+}
+.glassmorphism-button {
+  background: rgba(222, 105, 55, 0.209);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out, background 0.2s ease-in-out;
+}
+
+.glassmorphism-button:hover {
+  transform: scale(1.05);
+  background: rgba(255, 255, 255, 0.2);
+}
