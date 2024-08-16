@@ -40,7 +40,7 @@ class TestForm extends Component
     {
             $this->isSubmited=true;
     
-        $response = Http::post('http://localhost:8000/meeting', [
+        $response = Http::post('http://localhost:8000/meeting/create', [
             'userData' => json_encode($this->userData),
             'paid' => 0,
             'contentId' => $this->contentId,

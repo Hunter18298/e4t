@@ -8,10 +8,37 @@ use App\Models\Certificates;
 use App\Models\SocialUse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class MeetingController extends Controller
 {
+    public function index(Request $request)
+    {
+        $query = MeetingForm::query();
+
+        // Apply search filter
+        if ($search = $request->input('search')) {
+            $query->where('userData->name', 'like', "%{$search}%")
+                ->orWhere('userData->phone', 'like', "%{$search}%");
+        }
+
+        // Apply content filter
+        if ($contentId = $request->input('content')) {
+            $query->where('contentId', $contentId);
+        }
+
+        // Retrieve all meetings with related models
+        $meetings = $query->with(['contentType', 'socialUse', 'certificate'])->get();
+
+        return view('admin.meeting', compact('meetings'));
+    }
+
+    public function show($id)
+    {
+        $meeting = MeetingForm::with(['contentType', 'socialUse', 'certificate'])->findOrFail($id);
+
+        return view('meetings.show', compact('meeting'));
+    }
+
     public function create(Request $request)
     {
         $validated = $request->validate([
@@ -23,10 +50,10 @@ class MeetingController extends Controller
         ]);
 
         DB::transaction(function () use ($validated) {
-            $meeting = MeetingForm::create($validated);
-
-            return response()->json($meeting, 201);
+            MeetingForm::create($validated);
         });
+
+        return redirect()->route('admin.meeting')->with('success', 'Meeting created successfully.');
     }
 
     public function update(Request $request, $id)
@@ -38,44 +65,43 @@ class MeetingController extends Controller
             'certificateId' => 'sometimes|integer',
             'socialId' => 'sometimes|integer',
         ]);
-        
+
         DB::transaction(function () use ($id, $validated) {
             $meeting = MeetingForm::findOrFail($id);
             $meeting->update($validated);
-
-            return response()->json($meeting, 200);
         });
-    }
 
-    public function show($id)
-    {
-        $meeting = MeetingForm::with(['content', 'socialUse', 'certificates'])->find($id);
-
-        if (!$meeting) {
-            return response()->json(['error' => 'Meeting record not found'], 404);
-        }
-
-        return response()->json($meeting, 200);
-    }
-
-    public function index()
-    {
-        $meetings = MeetingForm::with(['content', 'social', 'certificate'])->get();
-
-        return response()->json($meetings, 200);
+        return redirect()->route('admin.meeting')->with('success', 'Meeting updated successfully.');
     }
 
     public function destroy($id)
     {
-        $meeting = MeetingForm::find($id);
-
-        if (!$meeting) {
-            return response()->json(['error' => 'Meeting not found'], 404);
-        }
+        $meeting = MeetingForm::findOrFail($id);
 
         $meeting->delete();
 
-        return response()->json(null, 204);
+        return redirect()->route('admin.meeting')->with('success', 'Meeting deleted successfully.');
+    }
+
+    public function markPaid(Request $request)
+    {
+        $validated = $request->validate([
+            'meeting_id' => 'required|integer|exists:meeting_forms,id',
+            'paidAmount' => 'required|numeric',
+            'groupId' => 'required|integer|exists:course_groups,id',
+            'colorStatusId' => 'required|integer|exists:color_statuses,id',
+        ]);
+
+        DB::transaction(function () use ($validated) {
+            $meeting = MeetingForm::findOrFail($validated['meeting_id']);
+            $meeting->update([
+                'paid' => true,
+                'paidAmount' => $validated['paidAmount'],
+                'groupId' => $validated['groupId'],
+                'colorStatusId' => $validated['colorStatusId'],
+            ]);
+        });
+
+        return redirect()->route('admin.meeting')->with('success', 'Meeting marked as paid successfully.');
     }
 }
-

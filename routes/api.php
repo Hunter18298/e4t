@@ -1,16 +1,23 @@
 <?php
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MeetingController;
 use App\Http\Controllers\OnlineController;
-use App\Http\Controllers\AcceptFormController ;
-use App\Http\Controllers\CertificateController ;
+use App\Http\Controllers\AcceptFormController;
+use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\ColorStatusController;
 use App\Http\Controllers\ContentTypeController;
 use App\Http\Controllers\CourseGroupController;
 use App\Http\Controllers\SocialUseController;
 
+Route::get('/user', function (Request $request) {
+    return $request->user();
+})->middleware('auth:sanctum');
+
 
 // Create a new meeting record
-Route::post('/meeting/create', [MeetingController::class, 'create']);
+Route::post('/meeting/create', [MeetingController::class, 'create'])->middleware('auth:sanctum');
 
 
 // Update a meeting record by ID
