@@ -38,7 +38,7 @@ class MeetingController extends Controller
             'certificateId' => 'sometimes|integer',
             'socialId' => 'sometimes|integer',
         ]);
-
+        $meeting=null;
         DB::transaction(function () use ($id, $validated) {
             $meeting = MeetingForm::findOrFail($id);
             $meeting->update($validated);

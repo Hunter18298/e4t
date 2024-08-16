@@ -22,6 +22,13 @@ class TestForm extends Component
     public $certificates = [];
     public $socialUses = [];
 
+    protected $rules = [
+        'userData.name' => 'required|string',
+        'userData.phone' => 'required|string',
+        'contentId' => 'required|integer',
+        'certificateId' => 'required|integer',
+        'socialId' => 'required|integer',
+    ];
     public function mount()
     {
         // Load data for select options
@@ -32,14 +39,16 @@ class TestForm extends Component
      public function submitForm()
     {
             $this->isSubmited=true;
+    
         $response = Http::post('http://localhost:8000/meeting', [
             'userData' => json_encode($this->userData),
-            'paid' => $this->paid,
+            'paid' => 0,
             'contentId' => $this->contentId,
             'certificateId' => $this->certificateId,
             'socialId' => $this->socialId,
         ]);
-   
+      echo $response;
+           dd($response);
         if ($response->successful()) {
             session()->flash('message', 'Meeting created successfully.');
             $this->isSubmited=true;

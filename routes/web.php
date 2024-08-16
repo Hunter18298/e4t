@@ -20,8 +20,10 @@ Route::get('/meeting-form', function () {
 });
 
 
+
 // Create a new meeting record
 Route::post('/meeting', [MeetingController::class, 'create']);
+
 
 // Update a meeting record by ID
 Route::put('/meeting/{id}', [MeetingController::class, 'update']);
