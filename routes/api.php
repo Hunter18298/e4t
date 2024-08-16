@@ -8,8 +8,10 @@ use App\Http\Controllers\ContentTypeController;
 use App\Http\Controllers\CourseGroupController;
 use App\Http\Controllers\SocialUseController;
 
+
 // Create a new meeting record
-Route::post('/meeting', [MeetingController::class, 'create']);
+Route::post('/meeting/create', [MeetingController::class, 'create']);
+
 
 // Update a meeting record by ID
 Route::put('/meeting/{id}', [MeetingController::class, 'update']);
@@ -127,3 +129,4 @@ Route::get('/socialUses', [SocialUseController::class, 'index']);
 
 // Delete a social use record by ID
 Route::delete('/socialUse/{id}', [SocialUseController::class, 'destroy']);
+

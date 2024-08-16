@@ -1,5 +1,6 @@
 <div>
     <form wire:submit.prevent="submitForm" class="max-w-md w-full">
+        @csrf
         <div class="relative mt-5 w-full">
             <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
                 <img src="{{ asset('/phone.svg') }}" alt="phone icon" class="w-5 h-5" />

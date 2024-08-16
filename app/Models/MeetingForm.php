@@ -23,7 +23,7 @@ class MeetingForm extends Model
 
     protected $casts = [
         'userData' => 'array',
-        'paid' => 'boolean',
+        'paid' => 'integer',
     ];
 
     // Define any relationships here if needed

@@ -38,7 +38,7 @@ class MeetingController extends Controller
             'certificateId' => 'sometimes|integer',
             'socialId' => 'sometimes|integer',
         ]);
-        $meeting=null;
+        
         DB::transaction(function () use ($id, $validated) {
             $meeting = MeetingForm::findOrFail($id);
             $meeting->update($validated);
@@ -49,7 +49,7 @@ class MeetingController extends Controller
 
     public function show($id)
     {
-        $meeting = MeetingForm::with(['contentType', 'socialUse', 'certificates'])->find($id);
+        $meeting = MeetingForm::with(['content', 'socialUse', 'certificates'])->find($id);
 
         if (!$meeting) {
             return response()->json(['error' => 'Meeting record not found'], 404);
@@ -60,7 +60,7 @@ class MeetingController extends Controller
 
     public function index()
     {
-        $meetings = MeetingForm::with(['contentType', 'socialUse', 'certificates'])->get();
+        $meetings = MeetingForm::with(['content', 'social', 'certificate'])->get();
 
         return response()->json($meetings, 200);
     }

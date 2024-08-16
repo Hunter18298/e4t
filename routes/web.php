@@ -22,7 +22,7 @@ Route::get('/meeting-form', function () {
 
 
 // Create a new meeting record
-Route::post('/meeting', [MeetingController::class, 'create']);
+Route::post('/meeting/create', [MeetingController::class, 'create']);
 
 
 // Update a meeting record by ID
