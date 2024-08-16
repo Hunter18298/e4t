@@ -28,6 +28,7 @@ Route::get('/meeting/{id}', [MeetingController::class, 'show']);
 
 // Get all meeting records
 Route::get('/meetings', [MeetingController::class, 'index']);
+Route::get('/meeting/mark-paid', [MeetingController::class, 'markPaid']);
 
 // Delete a meeting record by ID
 Route::delete('/meeting/{id}', [MeetingController::class, 'destroy']);
