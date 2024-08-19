@@ -1,15 +1,19 @@
-<div>
+<div class="container mx-auto p-4">
+    <button type="button" wire:click="openModal" class="btn btn-primary">Open
+        Modal</button>
+
+
     <div class="flex justify-between items-center mb-4">
         <input type="text" wire:model="search" placeholder="Search by name or phone"
             class="input input-bordered w-full max-w-xs">
-        <select wire:model="content" class="select select-bordered">
+        {{-- <select wire:model="content" class="select select-bordered">
             <option value="">All Contents</option>
             @foreach ($contents as $content)
                 <option value="{{ $content->id }}">
                     {{ $content->name }}
                 </option>
             @endforeach
-        </select>
+        </select> --}}
     </div>
 
     <div>
@@ -38,7 +42,7 @@
             </thead>
             <tbody>
                 @forelse ($meetings as $meeting)
-                    <tr>
+                    <tr wire:key="{{ $meeting->id }}">
                         <td class="border px-4 py-2">{{ $meeting->id }}</td>
                         <td class="border px-4 py-2">{{ $meeting->userData['name'] ?? 'N/A' }}</td>
                         <td class="border px-4 py-2">{{ $meeting->userData['phone'] ?? 'N/A' }}</td>
@@ -50,9 +54,10 @@
                             {{ $meeting->paid ? 'Yes' : 'No' }}
                         </td>
                         <td class="border px-4 py-2">
-                            <button class="btn btn-sm btn-outline-secondary"
-                                wire:click="markPaid({{ $meeting->id }})">
-                                Mark as Paid
+                            <button type="button" class="btn btn-error btn-xs"
+                                wire:click="delete({{ $meeting->id }})"
+                                wire:confirm="Are you Sure you want to delete?">
+                                Delete
                             </button>
                         </td>
                     </tr>
@@ -64,4 +69,8 @@
             </tbody>
         </table>
     </div>
+
+
+
+
 </div>

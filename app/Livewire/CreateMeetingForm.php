@@ -4,19 +4,25 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use Illuminate\Support\Facades\Http;
+use App\Models\MeetingForm;
 use App\Models\ContentType;
 use App\Models\Certificate;
 use App\Models\SocialUse;
+use Livewire\Attributes\Rule;
 
-class MeetingForm extends Component
+class CreateMeetingForm extends Component
 {
-    public $userData = [
+  // #[Rule('required|string|max:255', message: 'The name field is required.')]
+      public $userData = [
         'name' => '',
         'phone' => '',
     ];
     public $paid = false;
+      #[Rule('required', message: 'The name field is required.')]
     public $contentId;
+      #[Rule('required', message: 'The name field is required.')]
     public $certificateId;
+      #[Rule('required', message: 'The name field is required.')]
     public $socialId;
 
     public $contentTypes = [];
@@ -26,31 +32,25 @@ class MeetingForm extends Component
     public function mount()
     {
         // Load data for select options
-        // $this->contentTypes = ContentType::all();
+        $this->contentTypes = ContentType::all();  
         $this->certificates = Certificate::all();
         $this->socialUses = SocialUse::all();
     }
 
-    public function submitForm()
-    {
-        $response = Http::post('http://localhost:8000/meeting', [
-            'userData' => json_encode($this->userData),
-            'paid' => $this->paid,
+      public function save(){
+        $this->validate();
+        MeetingForm::create([
+            'userData' => $this->userData,
             'contentId' => $this->contentId,
+            'paid'=> false ,
             'certificateId' => $this->certificateId,
             'socialId' => $this->socialId,
         ]);
 
-        if ($response->successful()) {
-            session()->flash('message', 'Meeting created successfully.');
-            $this->reset(); // Reset form fields
-        } else {
-            session()->flash('error', 'Failed to create meeting.');
-        }
-    }
 
+    }
     public function render()
     {
-        return view('livewire.meeting-form');
+        return view('livewire.test-form');
     }
 }

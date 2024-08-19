@@ -2,15 +2,14 @@
 
 namespace App\Livewire;
 
-use App\Models\MeetingForm;
-use Livewire\Component;
-use Illuminate\Support\Facades\Http;
-use App\Models\ContentType;
 use App\Models\Certificate;
+use App\Models\ContentType;
+use App\Models\OnlineForm;
 use App\Models\SocialUse;
 use Livewire\Attributes\Rule;
+use Livewire\Component;
 
-class TestForm extends Component
+class Createolineform extends Component
 {
     // #[Rule('required', message: 'The name field is required.')]
       public $userData = [
@@ -39,7 +38,7 @@ class TestForm extends Component
 
     public function save(){
         $this->validate();
-        MeetingForm::create([
+        OnlineForm::create([
             'userData' =>$this->userData,
             'contentId' => $this->contentId,
             'paid'=> false,
@@ -51,6 +50,6 @@ class TestForm extends Component
     }
     public function render()
     {
-        return view('livewire.test-form');
+        return view('livewire.createolineform');
     }
 }

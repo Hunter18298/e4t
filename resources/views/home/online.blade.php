@@ -27,7 +27,7 @@
                 <button className="text-white rounded-md bg-gradient-to-r from-orange-400  text-4xl w-96 h-24">خوولی
                     ڕووبەڕوو</button>
             </div>
-            @livewire('test-form')
+            @livewire('createolineform')
 
 
             {{-- <footer dir="ltr" className="text-white flex flex-row mt-8 p-4 justify-between">

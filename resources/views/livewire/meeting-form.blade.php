@@ -1,4 +1,5 @@
 <div>
+    <button type="button" wire:click="modalTest">Test</button>
     <form wire:submit.prevent="submitForm" class="max-w-md w-full">
         @csrf
         <div class="relative mt-5 w-full">
